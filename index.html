@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB-ALARMANLAGEN | FR.ED Frühwarnsystem & August-Aktion</title>
+    <style>
+        :root {
+            --primary-color: #ff6600;
+            --dark-color: #121212;
+            --card-bg: #1e1e1e;
+            --light-bg: #0b0b0b;
+            --white: #ffffff;
+            --border-radius: 12px;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            max-height: 900px;
+            background: var(--dark-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .chat-header {
+            background: #181818;
+            color: var(--white);
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+        .chat-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+        .chat-header p {
+            margin: 3px 0 0;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            max-width: 90%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.bot {
+            background: var(--card-bg);
+            color: var(--white);
+            align-self: flex-start;
+            border-left: 4px solid var(--primary-color);
+            border-bottom-left-radius: 2px;
+        }
+        .message.user {
+            background: var(--primary-color);
+            color: var(--white);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+            font-weight: 600;
+        }
+        .chat-input-area {
+            padding: 15px;
+            background: #181818;
+            border-top: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .button-row {
+            display: flex;
+            gap: 8px;
+        }
+        .bot-btn {
+            background: var(--card-bg);
+            color: var(--white);
+            border: 1px solid #444;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+            flex: 1;
+            text-align: left;
+            text-decoration: none;
+            display: block;
+        }
+        .bot-btn:hover {
+            border-color: var(--primary-color);
+            background: #252525;
+        }
+        .bot-btn.primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            text-align: center;
+        }
+        .bot-btn.highlight {
+            background: #2e7d32;
+            border-color: #4caf50;
+            text-align: center;
+        }
+        .bot-btn.highlight:hover {
+            background: #388e3c;
+        }
+        .bot-btn.tank {
+            background: #f57f17;
+            border-color: #fbc02d;
+            text-align: center;
+            color: #000;
+            font-weight: bold;
+        }
+        .bot-btn.tank:hover {
+            background: #fbc02d;
+        }
+        .bot-btn.partner {
+            background: #0277bd;
+            border-color: #039be5;
+            text-align: center;
+        }
+        .bot-btn.partner:hover {
+            background: #01579b;
+        }
+        .bot-btn.music {
+            background: #4a148c;
+            border-color: #7b1fa2;
+            text-align: center;
+        }
+        .bot-btn.music:hover {
+            background: #6a1b9a;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px;
+            background: #2b2b2b;
+            border: 1px solid #444;
+            color: var(--white);
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .chat-input-area input:focus {
+            border-color: var(--primary-color);
+        }
+        .send-btn {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+    <source src="miromaxmusic-.mp3" type="audio/mpeg">
+</audio>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h2 id="partner-title">TB-ALARMANLAGEN</h2>
+        <p>Ihr regionaler Experte vor Ort</p>
+    </div>
+    
+    <div class="chat-messages" id="chatMessages"></div>
+
+    <div class="chat-input-area" id="inputArea">
+        <div id="dynamicInputContent"></div>
+    </div>
+</div>
+
+<script>
+    const partnerData = {
+        name: "Thomas Becker",
+        telefon: "01578 5267111",
+        email: "info@tb-alarmanlagen.de",
+        ort: "Unna / Dortmund"
+    };
+
+    document.getElementById('partner-title').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
+
+    let leadData = {
+        typ: "Anfrage",
+        zielgruppe: "Privatkunde",
+        gebaeudeTyp: "",
+        schutzStatus: "",
+        elementeCount: 6,
+        name: "",
+        adresse: "",
+        empfehlerPasswort: ""
+    };
+
+    const chatMessages = document.getElementById('chatMessages');
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsWnQjzteB2FNGYz9QqsMvOiHlY-Jr-NgHuf4pC-zL6w8swgLn3YRXc3-R6dz5ze4Q/exec";
+
+    function toggleMusic() {
+        const music = document.getElementById('bgMusic');
+        const btn = document.getElementById('musicBtn');
+        if (music.paused) {
+            music.play().then(() => {
+                if(btn) btn.innerText = "🎵 Musik ausschalten";
+            }).catch(e => {
+                console.log("Audio Play verweigert:", e);
+                alert("Musik konnte nicht abgespielt werden. Bitte prüfen, ob die Datei 'miromaxmusic-.mp3' im Projektordner liegt.");
+            });
+        } else {
+            music.pause();
+            if(btn) btn.innerText = "🎵 Hintergrundmusik ein / aus";
+        }
+    }
+
+    function addMessage(text, sender) {
+        const div = document.createElement('div');
+        div.className = `message ${sender}`;
+        div.innerHTML = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function sendDataToSheet() {
+        if (!SCRIPT_URL) return;
+        const payload = {
+            typ: leadData.typ,
+            partner: partnerData.name,
+            emailPartner: partnerData.email,
+            kunde: leadData.name,
+            adresse: leadData.adresse,
+            zielgruppe: leadData.zielgruppe,
+            empfehlerPasswort: leadData.empfehlerPasswort
+        };
+        fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).catch(error => console.error("Fehler beim Speichern:", error));
+    }
+
+    function setZielgruppe(typ) {
+        leadData.zielgruppe = typ;
+        addMessage(typ, 'user');
+        setTimeout(() => {
+            if(typ === 'Privatkunde') {
+                addMessage(`<b>PRIVATKUNDEN-SCHUTZ</b><br><br>• FR.ED schlägt Alarm, <b>BEVOR</b> der Täter im Objekt ist (Außenhautschutz).<br><br>• Kabellos, ohne aufwendiges Fräsen und mit flexiblen Finanzierungsoptionen.`, 'bot');
+            } else {
+                addMessage(`<b>GEWERBE-SCHUTZ</b><br><br>• Optimierter Schutz für Betrieb & Inhaltsversicherung.<br><br>• Schützt zuverlässig vor Einbruch und Betriebsunterbrechung.`, 'bot');
+            }
+            showFunktionStep();
+        }, 500);
+    }
+
+    function startTestAnfrage() {
+        addMessage("FR.ED kostenlos testen", 'user');
+        setTimeout(() => { addGünstigeTestAnfrageMaske(); }, 400);
+    }
+
+    function startTankgutscheinAktion() {
+        leadData.typ = "Tankgutschein-Empfehlung";
+        addMessage("⛽ Tankgutschein-Aktion (Empfehlen)", 'user');
+        setTimeout(() => {
+            addMessage(`<b>FR.ED WEITEREMPFEHLEN & BEIM NÄCHSTEN TANKEN SPAREN!</b><br><br>Helfen Sie Familie, Freunden oder Nachbarn im Raum ${partnerData.ort}, ihr Zuhause sicher zu machen.<br><br>🎁 <b>Ihre Belohnung:</b><br>• <b>20,- € Tankgutschein</b> für jeden durchgeführten Termin, bei dem FR.ED vorgestellt werden darf!<br>• <b>30,- € Tankgutschein zusätzlich</b> (gesamt 50,- €), wenn es zum Kauf des Frühwarnsystems führt!<br><br>Bitte tragen Sie hier Ihren Namen (als Empfehler) ein:`, 'bot');
+            updateDynamicInput(`
+                <div class="input-row"><input type="text" id="empfehlerName" placeholder="Ihr Vor- und Nachname"></div>
+                <button class="send-btn" onclick="saveTankEmpfehlerName()" style="margin-top: 5px; padding: 10px;">Weiter</button>
+            `);
+        }, 500);
+    }
+
+    function saveTankEmpfehlerName() {
+        const nameVal = document.getElementById('empfehlerName').value;
+        if(!nameVal) { alert('Bitte tragen Sie Ihren Namen ein.'); return; }
+        leadData.name = nameVal;
+        addMessage(nameVal, 'user');
+        setTimeout(() => {
+            addMessage(`Vielen Dank, ${nameVal}! Tragen Sie nun bitte die Kontaktdaten (Name & Telefonnummer) der Person ein, die wir wegen FR.ED ansprechen dürfen:`, 'bot');
+            updateDynamicInput(`
+                <div class="input-row"><input type="text" id="empfohlenerName" placeholder="Name der empfohlenen Person"></div>
+                <div class="input-row" style="margin-top: 5px;"><input type="text" id="empfohlenerTelefon" placeholder="Telefonnummer / Kontaktdaten"></div>
+                <button class="send-btn" onclick="saveTankEmpfehlungData()" style="margin-top: 5px; padding: 10px;">Empfehlung absenden & Gutschein sichern</button>
+            `);
+        }, 500);
+    }
+
+    function saveTankEmpfehlungData() {
+        const empfName = document.getElementById('empfohlenerName').value;
+        const empfTel = document.getElementById('empfohlenerTelefon').value;
+        if(!empfName || !empfTel) { alert('Bitte füllen Sie beide Felder aus.'); return; }
+        leadData.adresse = `Empfohlen: ${empfName} (Tel: ${empfTel})`;
+        addMessage(`${empfName}, ${empfTel}`, 'user');
+        sendDataToSheet();
+        setTimeout(() => {
+            addMessage(`Super! Die Empfehlung wurde an <b>${partnerData.name}</b> übermittelt. Sobald der Termin stattfindet, liegt Ihr <b>20,- € Tankgutschein</b> für Sie bereit!`, 'bot');
+            showFinalSummary();
+        }, 600);
+    }
+
+    function startPartnerLogin() {
+        addMessage("🤝 Partner werden (Geschützter Bereich)", 'user');
+        setTimeout(() => {
+            addMessage(`<b>GESCHÜTZTER PARTNER-BEREICH</b><br><br>Dieser Bereich enthält vertrauliche Provisions- und Konditionsdaten.<br><br>Bitte geben Sie das Partner-Passwort ein:`, 'bot');
+            updateDynamicInput(`
+                <div class="input-row"><input type="password" id="partnerPassInput" placeholder="Passwort eingeben..."></div>
+                <button class="send-btn" onclick="checkPartnerPassword()" style="margin-top: 5px; padding: 10px;">Zugang freigeben</button>
+            `);
+        }, 500);
+    }
+
+    function checkPartnerPassword() {
+        const pw = document.getElementById('partnerPassInput').value;
+        if(pw !== "partner2026") { alert("Falsches Passwort!"); return; }
+        addMessage("••••••••", 'user');
+        setTimeout(() => {
+            addMessage(`Passwort korrekt! Sie haben jetzt Zugriff auf das geschützte Partner-Formular.`, 'bot');
+            updateDynamicInput(`
+                <div class="button-group">
+                    <a href="https://docs.google.com/forms/d/13K9IjYLxB__i2n6oBdHNRGhJ7Iq3lSSliWXwp41qoSs/viewform" target="_blank" class="bot-btn partner" style="text-align: center;">🚀 Zum Partner-Formular (Google Docs)</a>
+                    <button class="bot-btn" onclick="location.reload()" style="background: #222; text-align: center;">Zurück zum Start</button>
+                </div>
+            `);
+        }, 500);
+    }
+
+    function showFunktionStep() {
+        setTimeout(() => {
+            updateDynamicInput(`
+                <div class="button-group">
+                    <button class="bot-btn primary" onclick="showVdSAndAnwesenheit()">🔍 Wie funktioniert FR.ED genau?</button>
+                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED jetzt kostenlos testen</button>
+                </div>
+            `);
+        }, 300);
+    }
+
+    function showVdSAndAnwesenheit() {
+        addMessage("Wie funktioniert FR.ED genau?", 'user');
+        setTimeout(() => {
+            addMessage(`<b>WIE FR.ED FUNKTIONIERT:</b><br><br>• Sensoren erkennen Hebelversuche sofort, bevor Fenster oder Türen aufgebrochen werden.<br><br>• <b>Anwesenheitsschutz:</b> Sie können nachts ungestört im Haus schlafen, während die Außenhaut scharf ist.`, 'bot');
+            updateDynamicInput(`
+                <div class="button-group">
+                    <button class="bot-btn primary" onclick="showServiceAndAugust()">🛡️ Zu Service & August-Aktion</button>
+                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED jetzt kostenlos testen</button>
+                </div>
+            `);
+        }, 500);
+    }
+
+    function showServiceAndAugust() {
+        addMessage("Zu Service & August-Aktion", 'user');
+        setTimeout(() => {
+            addMessage(`🔥 <b>AUGUST-AKTION:</b> Wer im August ein Frühwarnsystem kauft, bekommt das <b>GSM Kommunikationsmodul HUB im Wert von 695,00 € geschenkt</b>!`, 'bot');
+            updateDynamicInput(`
+                <div class="button-group">
+                    <button class="bot-btn primary" onclick="startSicherheitsCheck1()">🛡️ Interaktiven Sicherheits-Check starten</button>
+                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED jetzt kostenlos testen</button>
+                </div>
+            `);
+        }, 600);
+    }
+
+    function startSicherheitsCheck1() {
+        leadData.typ = "Sicherheits-Check";
+        addMessage("Interaktiven Sicherheits-Check starten", 'user');
+        setTimeout(() => {
+            addMessage(`<b>Sicherheits-Check (Frage 1 von 3):</b><br><br>Wie ist Ihr Objekt hauptsächlich beschaffen?`, 'bot');
+            updateDynamicInput(`
+                <div class="button-group">
+                    <button class="bot-btn" onclick="saveCheck1('Freistehendes Haus / Erdgeschoss')">🏡 Haus / Erdgeschoss (Höheres Risiko)</button>
+                    <button class="bot-btn" onclick="saveCheck1('Etagenwohnung / Gewerbeeinheit')">🏢 Etagenwohnung / Büro</button>
+                </div>
+            `);
+        }, 500);
+    }
+
+    function saveCheck1(antwort) {
+        leadData.gebaeudeTyp = antwort;
+        addMessage(antwort, 'user');
+        setTimeout(() => {
+            addMessage(`<b>Sicherheits-Check (Frage 2 von 3):</b><br><br>Wie bewerten Sie Ihren aktuellen Einbruchschutz?`, 'bot');
+            updateDynamicInput(`
+                <div class="button-group">
+                    <button class="bot-btn" onclick="saveCheck2('Kein bzw. veralteter Schutz')">⚠️ Kaum Schutz / Veraltet</button>
+                    <button class="bot-btn" onclick="saveCheck2('Mechanische Sicherungen vorhanden')">🔒 Mechanisch gesichert (ohne Alarm)</button>
+                </div>
+            `);
+        }, 500);
+    }
+
+    function saveCheck2(antwort) {
+        leadData.schutzStatus = antwort;
+        addMessage(antwort, 'user');
+        setTimeout(() => {
+            addMessage(`<b>Sicherheits-Check (Frage 3 von 3):</b><br><br>Wie viele gefährdete Außentüren und ebenerdige Fenster hat Ihr Objekt ca.?`, 'bot');
+            updateDynamicInput(`
+                <div class="input-row"><input type="number" id="elementeInput" value="6" min="1" max="50" style="text-align: center; font-weight: bold; font-size: 1.1rem;"></div>
+                <button class="send-btn" onclick="saveElemente()" style="margin-top: 5px; padding: 10px;">Auswertung & Angebot anzeigen</button>
+            `);
+        }, 500);
+    }
+
+    function saveElemente() {
+        const val = parseInt(document.getElementById('elementeInput').value);
+        if(!val || val < 1) { alert('Bitte geben Sie eine gültige Stückzahl ein.'); return; }
+        leadData.elementeCount = val;
+        addMessage(`${val} Elemente / Fenster & Türen`, 'user');
+        setTimeout(() => {
+            addMessage(`Vielen Dank! Basierend auf Ihrer Analyse für <b>${val} überwachte Elemente</b> ist FR.ED ideal geeignet.<br><br>Um Ihnen das Angebot zu sichern, tragen Sie bitte kurz Ihre Anschrift ein:`, 'bot');
+            updateDynamicInput(`
+                <div class="input-row"><input type="text" id="userName" placeholder="Vor- und Nachname / Firma"></div>
+                <div class="input-row" style="margin-top: 5px;"><input type="text" id="userAddress" placeholder="Straße, Hausnummer, PLZ Ort"></div>
+                <button class="send-btn" onclick="saveAddress()" style="margin-top: 5px; padding: 10px;">Daten absenden & Angebot sichern</button>
+            `);
+        }, 500);
+    }
+
+    function addGünstigeTestAnfrageMaske() {
+        leadData.typ = "Kostenloser Test";
+        addMessage(`Sichern Sie sich Ihren Termin zum kostenlosen Test von FR.ED direkt vor Ort durch <b>${partnerData.name}</b>.<br><br>Bitte tragen Sie Ihre Kontaktdaten ein:`, 'bot');
+        updateDynamicInput(`
+            <div class="input-row"><input type="text" id="userName" placeholder="Vor- und Nachname / Firma"></div>
+            <div class="input-row" style="margin-top: 5px;"><input type="text" id="userAddress" placeholder="Straße, Hausnummer, PLZ Ort"></div>
+            <button class="send-btn" onclick="saveTestLead()" style="margin-top: 5px; padding: 10px;">Kostenlosen Test anfragen</button>
+        `);
+    }
+
+    function saveTestLead() {
+        const nameVal = document.getElementById('userName').value;
+        const addrVal = document.getElementById('userAddress').value;
+        if(!nameVal || !addrVal) { alert('Bitte füllen Sie beide Felder aus.'); return; }
+        leadData.name = nameVal;
+        leadData.adresse = addrVal;
+        addMessage(`${nameVal}, ${addrVal}`, 'user');
+        sendDataToSheet();
+        setTimeout(() => {
+            addMessage(`Vielen Dank, ${nameVal}! Ihre Anfrage wurde an <b>${partnerData.name}</b> übermittelt. Wir melden uns umgehend!`, 'bot');
+            showFinalSummary();
+        }, 600);
+    }
+
+    function saveAddress() {
+        const nameVal = document.getElementById('userName').value;
+        const addrVal = document.getElementById('userAddress').value;
+        if(!nameVal || !addrVal) { alert('Bitte füllen Sie beide Felder aus.'); return; }
+        leadData.name = nameVal;
+        leadData.adresse = addrVal;
+        addMessage(`${nameVal}, ${addrVal}`, 'user');
+        sendDataToSheet();
+        setTimeout(() => {
+            addMessage(`Vielen Dank, ${nameVal}! Ihre Daten und die Analyse wurden an <b>${partnerData.name}</b> übermittelt.`, 'bot');
+            showFinalSummary();
+        }, 600);
+    }
+
+    function showFinalSummary() {
+        setTimeout(() => {
+            addMessage(`<b>NÄCHSTE SCHRITTE:</b><br><br>Tippen Sie auf einen Button, um uns direkt zu erreichen:`, 'bot');
+            updateDynamicInput(`
+                <div class="button-group">
+                    <div class="button-row">
+                        <button class="bot-btn" onclick="window.location.href='tel:${partnerData.telefon}'">📞 Anrufen</button>
+                        <button class="bot-btn" onclick="window.location.href='https://wa.me/49${partnerData.telefon.replace(/[^0-9]/g, '').substring(1)}'">💬 WhatsApp</button>
+                    </div>
+                    <button class="bot-btn" onclick="window.location.href='mailto:${partnerData.email}'">✉️ E-Mail schreiben</button>
+                </div>
+            `);
+        }, 600);
+    }
+
+    function updateDynamicInput(htmlContent) {
+        const dynamicArea = document.getElementById('dynamicInputContent');
+        if(dynamicArea) dynamicArea.innerHTML = htmlContent;
+    }
+
+    window.onload = function startBot() {
+        try {
+            addMessage(`<img src="IMG-20260725-WA0000.jpg" alt="Suritec FR.ED" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px;"><br><b>ÜBERBLICK: SURITEC FR.ED</b><br><br>Das intelligente Einbruch-Frühwarnsystem für Ihr Zuhause & Gewerberäume in ${partnerData.ort}.<br><br>⚠️ <i>August-Aktion:</i> Kostenloses HUB-Modul gesichert!<br><br>Wählen Sie Ihr Anliegen:`, 'bot');
+            updateDynamicInput(`
+                <div class="button-group">
+                    <div class="button-row">
+                        <button class="bot-btn" onclick="setZielgruppe('Privatkunde')">🏠 Privatkunde</button>
+                        <button class="bot-btn" onclick="setZielgruppe('Gewerbekunde')">🏢 Gewerbe</button>
+                    </div>
+                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED kostenlos testen</button>
+                    <button class="bot-btn tank" onclick="startTankgutscheinAktion()">⛽ Tankgutschein-Aktion (Empfehlen)</button>
+                    <button class="bot-btn partner" onclick="startPartnerLogin()">🤝 Partner werden (Geschützt)</button>
+                    <button class="bot-btn music" id="musicBtn" onclick="toggleMusic()">🎵 Hintergrundmusik ein / aus</button>
+                </div>
+            `);
+        } catch (err) {
+            addMessage("Fehler beim Start: " + err.message, 'bot');
+        }
+    };
+</script>
+
+</body>
+</html>
