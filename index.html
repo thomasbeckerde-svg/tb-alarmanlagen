@@ -211,11 +211,24 @@
 </div>
 
 <script>
+    <script>
+    // Hilfsfunktion, um URL-Parameter auszulesen
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // Dynamische Partner-Daten aus der URL (mit Fallback auf dich)
     const partnerData = {
-        name: "Thomas Becker",
-        telefon: "01578 5267111",
-        email: "info@tb-alarmanlagen.de",
-        ort: "Unna / Dortmund"
+        name: getUrlParameter('name') || "Thomas Becker",
+        telefon: getUrlParameter('tel') || "01578 5267111",
+        email: getUrlParameter('email') || "info@tb-alarmanlagen.de",
+        ort: getUrlParameter('ort') || "Unna / Dortmund"
+    };
+
+    document.getElementById('partner-title').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
     };
 
     document.getElementById('partner-title').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
