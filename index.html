@@ -199,6 +199,7 @@
 
 <div class="chat-container">
     <div class="chat-header">
+        <!-- Korrigierte ID von partner-title -->
         <h2 id="partner-title">TB-ALARMANLAGEN</h2>
         <p>Ihr regionaler Experte vor Ort</p>
     </div>
@@ -227,8 +228,8 @@
         ort: getUrlParameter('ort') || "Unna / Dortmund"
     };
 
-    document.getElementById('Partner-titel').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
-</script>
+    // Korrigierter Zugriff auf die ID (partner-title statt Partner-titel)
+    document.getElementById('partner-title').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
 
     let leadData = {
         typ: "Anfrage",
