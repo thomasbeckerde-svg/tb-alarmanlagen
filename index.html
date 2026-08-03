@@ -211,7 +211,6 @@
 </div>
 
 <script>
-    <script>
     // Hilfsfunktion, um URL-Parameter auszulesen
     function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -220,7 +219,7 @@
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 
-    // Dynamische Partner-Daten aus der URL (mit Fallback auf dich)
+    // Dynamische Partner-Daten aus der URL (mit Fallback)
     const partnerData = {
         name: getUrlParameter('name') || "Thomas Becker",
         telefon: getUrlParameter('tel') || "01578 5267111",
@@ -229,6 +228,7 @@
     };
 
     document.getElementById('partner-title').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
+</script>
     };
 
     document.getElementById('partner-title').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
