@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TB-Alarmanlagen - Partner: Thomas Becker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primär: #111111;
+            --sekundär: #1C1C1C;
+            --card-bg: #181818;
+            --text: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --border-color: #2D2D2D;
+            --schatten: 0 20px 40px rgba(0,0,0,0.6);
+            --gruen: #28a745;
+            --orange: #FF6600;
+            --blau: #007bff;
+            --lila: #6f42c1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--primär);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: var(--sekundär);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .header-title {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--orange);
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--schatten);
+            text-align: center;
+        }
+
+        .hero-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 15px 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 15px 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .notice-box {
+            background: rgba(255, 102, 0, 0.1);
+            border-left: 4px solid var(--orange);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0 20px 0;
+            font-size: 0.9rem;
+            text-align: left;
+            color: var(--text);
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            background: var(--sekundär);
+            border: 1px solid var(--border-color);
+            color: var(--text);
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active, .toggle-btn:hover {
+            border-color: var(--orange);
+            background: #222;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: white;
+            transition: opacity 0.2s, transform 0.1s;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .action-btn:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .btn-green { background-color: var(--gruen); }
+        .btn-orange { background-color: var(--orange); }
+        .btn-blue { background-color: var(--blau); }
+        .btn-purple { background-color: var(--lila); }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">TB-ALARMANLAGEN &ndash; Partner: Thomas Becker</div>
+        <div class="header-subtitle">Ihr regionaler Experte vor Ort</div>
+    </header>
+
+    <audio id="bgMusic" loop>
+        <source src="hintergrund.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        
+        <div class="card">
+            <img src="image1.png" alt="Suritec FR.ED" class="hero-img">
+            
+            <h2>ÜBERBLICK: SURITEC FR.ED</h2>
+            <p class="subtitle">Das intelligente Einbruch-Frühwarnsystem für Ihr Zuhause & Gewerberäume in Unna / Dortmund.</p>
+            
+            <div class="notice-box">
+                <i class="fa-solid fa-triangle-exclamation" style="color: var(--orange);"></i> <strong>September-Aktion:</strong> Kostenlosen Sicherheitscheck sichern!
+            </div>
+
+            <div style="text-align: left; font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; color: var(--text-muted);">
+                Wählen Sie Ihr Anliegen:
+            </div>
+
+            <!-- Privatkunde / Gewerbe Schalter -->
+            <div class="toggle-group">
+                <button class="toggle-btn active" onclick="setTarget('privat')">
+                    <i class="fa-solid fa-house"></i> Privatkunde
+                </button>
+                <button class="toggle-btn" onclick="setTarget('gewerbe')">
+                    <i class="fa-solid fa-building"></i> Gewerbe
+                </button>
+            </div>
+
+            <!-- AKTIONS-BUTTONS -->
+            <a href="tel:+49000000000" class="action-btn btn-green">
+                <i class="fa-solid fa-rocket"></i> FR.ED kostenlos testen
+            </a>
+
+            <a href="tel:+49000000000" class="action-btn btn-orange">
+                <i class="fa-solid fa-gas-pump"></i> Tankgutschein-Aktion (Empfehlen)
+            </a>
+
+            <a href="tel:+49000000000" class="action-btn btn-blue">
+                <i class="fa-solid fa-handshake"></i> Partner werden (Geschützt)
+            </a>
+
+            <button class="action-btn btn-purple" id="musicToggle">
+                <i class="fa-solid fa-music"></i> Hintergrundmusik ein / aus
+            </button>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2026 TB-Alarmanlagen &bull; Thomas Becker
+    </footer>
+
+    <script>
+        const musicBtn = document.getElementById('musicToggle');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicBtn.innerHTML = '<i class="fa-solid fa-music"></i> Hintergrundmusik ein / aus';
+            } else {
+                bgMusic.play().catch(e => console.log("Autoplay blockiert"));
+                musicBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Musik läuft (Stoppen)';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        function setTarget(type) {
+            const btns = document.querySelectorAll('.toggle-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
