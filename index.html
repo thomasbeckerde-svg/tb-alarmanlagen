@@ -3,545 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TB-ALARMANLAGEN | FR.ED Frühwarnsystem & August-Aktion</title>
+    <title>Suritec FR.ED Frühwarnsystem - TB-Alarmanlagen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         :root {
-            --primary-color: #ff6600;
-            --dark-color: #121212;
-            --card-bg: #1e1e1e;
-            --light-bg: #0b0b0b;
-            --white: #ffffff;
-            --border-radius: 12px;
+            --primary: #111111;
+            --accent: #FF6600;
+            --secondary: #1C1C1C;
+            --card-bg: #181818;
+            --text: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --border-color: #2D2D2D;
+            --shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light-bg);
-            color: var(--white);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .chat-container {
-            width: 100%;
-            max-width: 480px;
-            height: 100vh;
-            max-height: 900px;
-            background: var(--dark-color);
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-        .chat-header {
-            background: #181818;
-            color: var(--white);
-            padding: 15px 20px;
-            text-align: center;
-            border-bottom: 1px solid #333;
-        }
-        .chat-header h2 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--primary-color);
-        }
-        .chat-header p {
-            margin: 3px 0 0;
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .message {
-            max-width: 90%;
-            padding: 14px 18px;
-            border-radius: 12px;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .message.bot {
-            background: var(--card-bg);
-            color: var(--white);
-            align-self: flex-start;
-            border-left: 4px solid var(--primary-color);
-            border-bottom-left-radius: 2px;
-        }
-        .message.user {
-            background: var(--primary-color);
-            color: var(--white);
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-            font-weight: 600;
-        }
-        .chat-input-area {
-            padding: 15px;
-            background: #181818;
-            border-top: 1px solid #333;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .button-row {
-            display: flex;
-            gap: 8px;
-        }
-        .bot-btn {
-            background: var(--card-bg);
-            color: var(--white);
-            border: 1px solid #444;
-            padding: 12px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.88rem;
-            transition: all 0.2s;
-            flex: 1;
-            text-align: left;
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #050505; color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+
+        .nav-header { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+        .nav-brand { font-size: 1.2rem; font-weight: 900; }
+        .nav-brand span { color: var(--accent); }
+        .nav-phone { background: var(--accent); color: var(--text); padding: 8px 14px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+
+        .presentation-container { width: 100%; max-width: 900px; margin: 90px auto 40px auto; padding: 20px; display: flex; flex-direction: column; gap: 30px; }
+        .slide { background-color: var(--primary); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 20px; }
+        
+        .slide-header { border-bottom: 2px solid var(--border-color); padding-bottom: 15px; }
+        .slide-title { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
+        .slide-content { display: flex; flex-direction: column; gap: 15px; }
+        
+        .highlight-box { background: linear-gradient(135deg, #1A1A1A 0%, #242424 100%); border-left: 5px solid var(--accent); padding: 22px; border-radius: 0 12px 12px 0; }
+        
+        /* Neu gestaltete, leuchtende Aktions-Box */
+        .promo-banner { 
+            margin-top: 22px; 
+            background: linear-gradient(135deg, rgba(255,102,0,0.15) 0%, rgba(36,24,17,0.9) 100%); 
+            border: 2px solid var(--accent); 
+            padding: 18px 20px; 
+            border-radius: 12px; 
+            text-align: center; 
             text-decoration: none;
             display: block;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255,102,0,0.2);
         }
-        .bot-btn:hover {
-            border-color: var(--primary-color);
-            background: #252525;
+        .promo-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(255,102,0,0.4);
+            background: linear-gradient(135deg, rgba(255,102,0,0.25) 0%, rgba(45,28,18,0.95) 100%);
         }
-        .bot-btn.primary {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            text-align: center;
-        }
-        .bot-btn.highlight {
-            background: #2e7d32;
-            border-color: #4caf50;
-            text-align: center;
-        }
-        .bot-btn.highlight:hover {
-            background: #388e3c;
-        }
-        .bot-btn.tank {
-            background: #f57f17;
-            border-color: #fbc02d;
-            text-align: center;
-            color: #000;
-            font-weight: bold;
-        }
-        .bot-btn.tank:hover {
-            background: #fbc02d;
-        }
-        .bot-btn.partner {
-            background: #0277bd;
-            border-color: #039be5;
-            text-align: center;
-        }
-        .bot-btn.partner:hover {
-            background: #01579b;
-        }
-        .bot-btn.music {
-            background: #4a148c;
-            border-color: #7b1fa2;
-            text-align: center;
-        }
-        .bot-btn.music:hover {
-            background: #6a1b9a;
-        }
-        .input-row {
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            padding: 12px;
-            background: #2b2b2b;
-            border: 1px solid #444;
-            color: var(--white);
-            border-radius: 8px;
-            outline: none;
-            font-size: 0.9rem;
-        }
-        .chat-input-area input:focus {
-            border-color: var(--primary-color);
-        }
-        .send-btn {
-            background: var(--primary-color);
-            color: var(--white);
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+
+        .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 14px; font-size: 1.15rem; }
+        .bullet-list li { padding-left: 30px; position: relative; }
+        .bullet-list li::before { content: "■"; position: absolute; left: 0; color: var(--accent); }
+
+        /* Kontaktbuttons */
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 10px; }
+        .contact-btn { background: var(--secondary); border: 1px solid var(--border-color); color: var(--text); padding: 16px 20px; border-radius: 12px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 15px; transition: all 0.2s; font-size: 1.05rem; }
+        .contact-btn:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+        .contact-btn i { font-size: 1.4rem; color: var(--accent); }
+        .contact-btn:hover i { color: var(--text); }
+
+        /* Action Button für den Schnellcheck */
+        .action-btn { background: var(--accent); color: var(--text); padding: 16px 24px; border-radius: 12px; text-decoration: none; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.2s; font-size: 1.15rem; margin-top: 10px; box-shadow: 0 10px 20px rgba(255,102,0,0.3); }
+        .action-btn:hover { background: #e05b00; transform: translateY(-2px); box-shadow: 0 15px 25px rgba(255,102,0,0.4); }
+
+        @media (max-width: 768px) { .slide { padding: 25px; } .slide-title { font-size: 1.4rem; } .bullet-list { font-size: 1rem; } }
     </style>
 </head>
 <body>
 
-<audio id="bgMusic" loop>
-    <source src="miromaxmusic-music-promotion-no-copyright-513944.mp3" type="audio/mpeg">
-</audio>
+    <audio autoplay loop id="bg-music">
+        <source src="hintergrund.mp3" type="audio/mpeg">
+        Dein Browser unterstützt kein Audio-Element.
+    </audio>
 
-<div class="chat-container">
-    <div class="chat-header">
-        <!-- Korrigierte ID von partner-title -->
-        <h2 id="partner-title">TB-ALARMANLAGEN</h2>
-        <p>Ihr regionaler Experte vor Ort</p>
+    <div class="nav-header">
+        <div class="nav-brand">TB-<span>ALARMANLAGEN</span></div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button onclick="toggleMusic()" id="music-btn" style="background: var(--secondary); border: 1px solid var(--border-color); color: var(--text); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem;"><i class="fa-solid fa-music"></i></button>
+            <a href="tel:015785267111" class="nav-phone"><i class="fa-solid fa-phone"></i> Anrufen</a>
+        </div>
     </div>
-    
-    <div class="chat-messages" id="chatMessages"></div>
 
-    <div class="chat-input-area" id="inputArea">
-        <div id="dynamicInputContent"></div>
+    <div class="presentation-container">
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Überblick</div></div>
+            <div class="slide-content" style="text-align: center;">
+                <img src="image1.png" alt="TB-Alarmanlagen Logo" style="width: 100%; max-width: 240px; border-radius: 12px; margin: 0 auto 15px auto; display: block; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                <h1 style="font-size: 2.8rem; margin-bottom: 10px;">SURITEC <span style="color:var(--accent);">FR.ED</span></h1>
+                <p style="font-size: 1.3rem; color: var(--text-muted);">Das intelligente Einbruch-Frühwarnsystem für Ihr Zuhause & Gewerbe.</p>
+                
+                <!-- Klickbarer September-Aktion Banner mit Glow-Effekt -->
+                <a href="https://tb-safebot.tiiny.site" target="_blank" class="promo-banner">
+                    <p style="font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-bottom: 4px;">
+                        <i class="fa-solid fa-gift"></i> SEPTEMBER-AKTION
+                    </p>
+                    <p style="font-size: 1rem; color: var(--text);">Kostenlosen Sicherheitscheck sichern & Schnelltest starten &rarr;</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Das Problem</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Einbruchzahlen auf hohem Niveau in Deutschland.</li>
+                    <li>Klassische Alarmanlagen melden den Einbruch meist erst, <strong>nachdem</strong> der Schaden entstanden ist.</li>
+                    <li>Herkömmliche Systeme bieten keinen Schutz, während man sich im Gebäude aufhält.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Die Lösung: FR.ED</div></div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <p style="font-size: 1.2rem;">FR.ED schlägt Alarm, <strong>bevor</strong> der Täter im Objekt ist – noch beim Einbruchversuch an Fenster und Tür.</p>
+                </div>
+                <ul class="bullet-list">
+                    <li>Frühwarnsystem der neuesten Generation.</li>
+                    <li>Schützt die Außenhaut des Gebäudes zuverlässig.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Wie FR.ED funktioniert</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Hochsensible Erschütterungs- und Öffnungssensoren.</li>
+                    <li>Erkennt mechanische Hebelversuche sofort, bevor das Glas bricht oder die Tür nachgibt.</li>
+                    <li>Aktivierung ganz bequem per Knopfdruck oder App.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Anwesenheitsschutz</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Schutz rund um die Uhr – besonders nachts, wenn Sie schlafen oder im Betrieb gearbeitet wird.</li>
+                    <li>Bewegungsfreiheit im Gebäude bleibt erhalten, während Fenster und Türen scharf geschaltet sind.</li>
+                    <li>Sorgt für ein beruhigtes Sicherheitsgefühl in den eigenen vier Wänden und Firmenräumen.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Das Thema VdS: Die Fakten</div></div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <p style="font-size: 1.15rem;">Was steckt hinter VdS? Die VdS Schadenverhütung GmbH ist ein Tochterunternehmen des Versicherungsverbandes (GDV), das Produkte kostenpflichtig prüft und zertifiziert.</p>
+                </div>
+                <ul class="bullet-list">
+                    <li>Eine VdS-Zertifizierung ist extrem teuer in Lizenz und Prüfung – Kosten, die am Ende künstlich auf den Kunden umgelegt werden.</li>
+                    <li>Moderne Technik deckt die EN-Richtlinien (z. B. DIN EN 50131) voll ab, ohne die unnötigen VdS-Kosten.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Wann braucht man VdS wirklich?</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Eine VdS-Zertifizierung ist im privaten Haushalt oder mittelständischen Gewerbe <strong>nur dann</strong> nötig, wenn die Versicherung das explizit als vertragliche Auflage fordert.</li>
+                    <li>Grundsätzlich ist das bei den allermeisten privaten Haushalten oder mittelständischen Betrieben <strong>nicht</strong> der Fall (Ausnahmen sind z.B. Juweliere oder Banken).</li>
+                    <li>FR.ED bietet erstklassige, zuverlässige Sicherheit ohne unnötige Zertifizierungs-Aufpreise.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Versicherungs- & Police-Check</div></div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <p style="font-size: 1.2rem;">Optimieren Sie Ihren Versicherungsschutz für Hausrat und Inhaltsversicherung!</p>
+                </div>
+                <ul class="bullet-list">
+                    <li>Prüfung bestehender Hausrat- und Inhaltsversicherungspolicen auf optimalen Schutz.</li>
+                    <li>Moderne Frühwarnsysteme werden von Versicherern gerne gesehen.</li>
+                    <li>Schutz vor hohen Folgeschäden und Einbruchfrust.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Gewerbeleasing & Finanzierung</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Flexible Lösungen für Gewerbekunden.</li>
+                    <li>Gewerbeleasing und smarte Finanzierungsmodelle für Ihre Alarmanlagen-Investition.</li>
+                    <li>Liquidität schonen und gleichzeitig den Betrieb professionell absichern.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Keine Montage-Komplexität</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Kein aufwendiges Fräsen oder Verlegen von Kabeln notwendig.</li>
+                    <li>Ideal auch für Bestandsimmobilien und Mietobjekte nachrüstbar.</li>
+                    <li>Schnelle und saubere Installation durch TB-Alarmanlagen.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Abschreckung wirkt</div></div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <p style="font-size: 1.2rem;">Die meisten Einbrecher brechen den Versuch ab, sobald der laute Alarm beim ersten Hebelversuch ertönt.</p>
+                </div>
+                <ul class="bullet-list">
+                    <li>Verhinderung von kostspieligem Vandalismus und Sachschaden.</li>
+                    <li>Schutz von persönlichen Wertsachen, Maschinen und Inventar.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Der TB-Alarmanlagen Service</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Persönliche Beratung vor Ort bei Ihnen im Objekt.</li>
+                    <li>Individuelle Sicherheitsanalyse und maßgeschneiderte Planung.</li>
+                    <li>Fachgerechte Montage, Einweisung und Begleitung bei Versicherungsfragen inklusive.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Der 2-Minuten-Schnellcheck</div></div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <p style="font-size: 1.2rem;">Finden Sie in wenigen Schritten heraus, wie gut Ihr Objekt aktuell geschützt ist.</p>
+                </div>
+                <p style="color: var(--text-muted); font-size: 1.1rem;">Nutzen Sie unsere digitale Visitenkarte für Ihre persönliche Risiko- und Schutzanalyse.</p>
+                
+                <a href="https://tb-safebot.tiiny.site" target="_blank" class="action-btn">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Jetzt Schnellcheck starten (SafeBot)</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Häufige Fragen (FAQ)</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li><strong>Funktioniert FR.ED bei Haustieren?</strong> Ja, da die Außenhaut und nicht der Innenraum überwacht wird.</li>
+                    <li><strong>Gibt es Fehlalarme?</strong> Nein, die Sensorik unterscheidet präzise zwischen Witterung und echtem Hebelangriff.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Zusammenfassung</div></div>
+            <div class="slide-content">
+                <ul class="bullet-list">
+                    <li>Frühwarnung statt reiner Schadensmeldung.</li>
+                    <li>Optimierter Schutz für Hausrat, Inhaltsversicherung & Gewerbe.</li>
+                    <li>Ihr regionaler Experte: TB-Alarmanlagen.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header"><div class="slide-title">Kontakt & nächste Schritte</div></div>
+            <div class="slide-content">
+                <h2 style="font-size: 1.6rem; margin-bottom: 5px;">Sichern Sie Ihr Objekt jetzt ab!</h2>
+                <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 10px;">Tippen Sie auf einen Button, um uns direkt zu erreichen:</p>
+                
+                <div class="contact-grid">
+                    <a href="tel:015785267111" class="contact-btn">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Anrufen</div>
+                            <div>01578 5267111</div>
+                        </div>
+                    </a>
+                    <a href="https://wa.me/4915785267111" target="_blank" class="contact-btn">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">WhatsApp</div>
+                            <div>Direktchat starten</div>
+                        </div>
+                    </a>
+                    <a href="mailto:info@tb-alarmanlagen.de" class="contact-btn">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">E-Mail</div>
+                            <div>info@tb-alarmanlagen.de</div>
+                        </div>
+                    </a>
+                    <a href="https://tb-alarmanlagen.de" target="_blank" class="contact-btn">
+                        <i class="fa-solid fa-globe"></i>
+                        <div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Webseite</div>
+                            <div>Besuchen</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    // Hilfsfunktion, um URL-Parameter auszulesen
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
+    <script>
+        const music = document.getElementById('bg-music');
+        music.volume = 0.25;
 
-    // Dynamische Partner-Daten aus der URL (mit Fallback)
-    const partnerData = {
-        name: getUrlParameter('name') || "Thomas Becker",
-        telefon: getUrlParameter('tel') || "01578 5267111",
-        email: getUrlParameter('email') || "info@tb-alarmanlagen.de",
-        ort: getUrlParameter('ort') || "Unna / Dortmund"
-    };
-
-    // Korrigierter Zugriff auf die ID (partner-title statt Partner-titel)
-    document.getElementById('partner-title').innerText = "TB-ALARMANLAGEN – Partner: " + partnerData.name;
-
-    let leadData = {
-        typ: "Anfrage",
-        zielgruppe: "Privatkunde",
-        gebaeudeTyp: "",
-        schutzStatus: "",
-        elementeCount: 6,
-        name: "",
-        adresse: "",
-        empfehlerPasswort: ""
-    };
-
-    const chatMessages = document.getElementById('chatMessages');
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsWnQjzteB2FNGYz9QqsMvOiHlY-Jr-NgHuf4pC-zL6w8swgLn3YRXc3-R6dz5ze4Q/exec";
-
-    function toggleMusic() {
-        const music = document.getElementById('bgMusic');
-        const btn = document.getElementById('musicBtn');
-        if (music.paused) {
-            music.play().then(() => {
-                if(btn) btn.innerText = "🎵 Musik ausschalten";
-            }).catch(e => {
-                console.log("Audio Play verweigert:", e);
-                alert("Musik konnte nicht abgespielt werden. Bitte prüfen, ob die Datei 'miromaxmusic-.mp3' im Projektordner liegt.");
-            });
-        } else {
-            music.pause();
-            if(btn) btn.innerText = "🎵 Hintergrundmusik ein / aus";
-        }
-    }
-
-    function addMessage(text, sender) {
-        const div = document.createElement('div');
-        div.className = `message ${sender}`;
-        div.innerHTML = text;
-        chatMessages.appendChild(div);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function sendDataToSheet() {
-        if (!SCRIPT_URL) return;
-        const payload = {
-            typ: leadData.typ,
-            partner: partnerData.name,
-            emailPartner: partnerData.email,
-            kunde: leadData.name,
-            adresse: leadData.adresse,
-            zielgruppe: leadData.zielgruppe,
-            empfehlerPasswort: leadData.empfehlerPasswort
-        };
-        fetch(SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        }).catch(error => console.error("Fehler beim Speichern:", error));
-    }
-
-    function setZielgruppe(typ) {
-        leadData.zielgruppe = typ;
-        addMessage(typ, 'user');
-        setTimeout(() => {
-            if(typ === 'Privatkunde') {
-                addMessage(`<b>PRIVATKUNDEN-SCHUTZ</b><br><br>• FR.ED schlägt Alarm, <b>BEVOR</b> der Täter im Objekt ist (Außenhautschutz).<br><br>• Kabellos, ohne aufwendiges Fräsen und mit flexiblen Finanzierungsoptionen.`, 'bot');
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                document.getElementById('music-btn').style.opacity = '1';
             } else {
-                addMessage(`<b>GEWERBE-SCHUTZ</b><br><br>• Optimierter Schutz für Betrieb & Inhaltsversicherung.<br><br>• Schützt zuverlässig vor Einbruch und Betriebsunterbrechung.`, 'bot');
+                music.pause();
+                document.getElementById('music-btn').style.opacity = '0.5';
             }
-            showFunktionStep();
-        }, 500);
-    }
-
-    function startTestAnfrage() {
-        addMessage("FR.ED kostenlos testen", 'user');
-        setTimeout(() => { addGünstigeTestAnfrageMaske(); }, 400);
-    }
-
-    function startTankgutscheinAktion() {
-        leadData.typ = "Tankgutschein-Empfehlung";
-        addMessage("⛽ Tankgutschein-Aktion (Empfehlen)", 'user');
-        setTimeout(() => {
-            addMessage(`<b>FR.ED WEITEREMPFEHLEN & BEIM NÄCHSTEN TANKEN SPAREN!</b><br><br>Helfen Sie Familie, Freunden oder Nachbarn im Raum ${partnerData.ort}, ihr Zuhause sicher zu machen.<br><br>🎁 <b>Ihre Belohnung:</b><br>• <b>20,- € Tankgutschein</b> für jeden durchgeführten Termin, bei dem FR.ED vorgestellt werden darf!<br>• <b>30,- € Tankgutschein zusätzlich</b> (gesamt 50,- €), wenn es zum Kauf des Frühwarnsystems führt!<br><br>Bitte tragen Sie hier Ihren Namen (als Empfehler) ein:`, 'bot');
-            updateDynamicInput(`
-                <div class="input-row"><input type="text" id="empfehlerName" placeholder="Ihr Vor- und Nachname"></div>
-                <button class="send-btn" onclick="saveTankEmpfehlerName()" style="margin-top: 5px; padding: 10px;">Weiter</button>
-            `);
-        }, 500);
-    }
-
-    function saveTankEmpfehlerName() {
-        const nameVal = document.getElementById('empfehlerName').value;
-        if(!nameVal) { alert('Bitte tragen Sie Ihren Namen ein.'); return; }
-        leadData.name = nameVal;
-        addMessage(nameVal, 'user');
-        setTimeout(() => {
-            addMessage(`Vielen Dank, ${nameVal}! Tragen Sie nun bitte die Kontaktdaten (Name & Telefonnummer) der Person ein, die wir wegen FR.ED ansprechen dürfen:`, 'bot');
-            updateDynamicInput(`
-                <div class="input-row"><input type="text" id="empfohlenerName" placeholder="Name der empfohlenen Person"></div>
-                <div class="input-row" style="margin-top: 5px;"><input type="text" id="empfohlenerTelefon" placeholder="Telefonnummer / Kontaktdaten"></div>
-                <button class="send-btn" onclick="saveTankEmpfehlungData()" style="margin-top: 5px; padding: 10px;">Empfehlung absenden & Gutschein sichern</button>
-            `);
-        }, 500);
-    }
-
-    function saveTankEmpfehlungData() {
-        const empfName = document.getElementById('empfohlenerName').value;
-        const empfTel = document.getElementById('empfohlenerTelefon').value;
-        if(!empfName || !empfTel) { alert('Bitte füllen Sie beide Felder aus.'); return; }
-        leadData.adresse = `Empfohlen: ${empfName} (Tel: ${empfTel})`;
-        addMessage(`${empfName}, ${empfTel}`, 'user');
-        sendDataToSheet();
-        setTimeout(() => {
-            addMessage(`Super! Die Empfehlung wurde an <b>${partnerData.name}</b> übermittelt. Sobald der Termin stattfindet, liegt Ihr <b>20,- € Tankgutschein</b> für Sie bereit!`, 'bot');
-            showFinalSummary();
-        }, 600);
-    }
-
-    function startPartnerLogin() {
-        addMessage("🤝 Partner werden (Geschützter Bereich)", 'user');
-        setTimeout(() => {
-            addMessage(`<b>GESCHÜTZTER PARTNER-BEREICH</b><br><br>Dieser Bereich enthält vertrauliche Provisions- und Konditionsdaten.<br><br>Bitte geben Sie das Partner-Passwort ein:`, 'bot');
-            updateDynamicInput(`
-                <div class="input-row"><input type="password" id="partnerPassInput" placeholder="Passwort eingeben..."></div>
-                <button class="send-btn" onclick="checkPartnerPassword()" style="margin-top: 5px; padding: 10px;">Zugang freigeben</button>
-            `);
-        }, 500);
-    }
-
-    function checkPartnerPassword() {
-        const pw = document.getElementById('partnerPassInput').value;
-        if(pw !== "partner2026") { alert("Falsches Passwort!"); return; }
-        addMessage("••••••••", 'user');
-        setTimeout(() => {
-            addMessage(`Passwort korrekt! Sie haben jetzt Zugriff auf das geschützte Partner-Formular.`, 'bot');
-            updateDynamicInput(`
-                <div class="button-group">
-                    <a href="https://docs.google.com/forms/d/13K9IjYLxB__i2n6oBdHNRGhJ7Iq3lSSliWXwp41qoSs/viewform" target="_blank" class="bot-btn partner" style="text-align: center;">🚀 Zum Partner-Formular (Google Docs)</a>
-                    <button class="bot-btn" onclick="location.reload()" style="background: #222; text-align: center;">Zurück zum Start</button>
-                </div>
-            `);
-        }, 500);
-    }
-
-    function showFunktionStep() {
-        setTimeout(() => {
-            updateDynamicInput(`
-                <div class="button-group">
-                    <button class="bot-btn primary" onclick="showVdSAndAnwesenheit()">🔍 Wie funktioniert FR.ED genau?</button>
-                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED jetzt kostenlos testen</button>
-                </div>
-            `);
-        }, 300);
-    }
-
-    function showVdSAndAnwesenheit() {
-        addMessage("Wie funktioniert FR.ED genau?", 'user');
-        setTimeout(() => {
-            addMessage(`<b>WIE FR.ED FUNKTIONIERT:</b><br><br>• Sensoren erkennen Hebelversuche sofort, bevor Fenster oder Türen aufgebrochen werden.<br><br>• <b>Anwesenheitsschutz:</b> Sie können nachts ungestört im Haus schlafen, während die Außenhaut scharf ist.`, 'bot');
-            updateDynamicInput(`
-                <div class="button-group">
-                    <button class="bot-btn primary" onclick="showServiceAndAugust()">🛡️ Zu Service & August-Aktion</button>
-                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED jetzt kostenlos testen</button>
-                </div>
-            `);
-        }, 500);
-    }
-
-    function showServiceAndAugust() {
-        addMessage("Zu Service & August-Aktion", 'user');
-        setTimeout(() => {
-            addMessage(`🔥 <b>AUGUST-AKTION:</b> Wer im August ein Frühwarnsystem kauft, bekommt das <b>GSM Kommunikationsmodul HUB im Wert von 695,00 € geschenkt</b>!`, 'bot');
-            updateDynamicInput(`
-                <div class="button-group">
-                    <button class="bot-btn primary" onclick="startSicherheitsCheck1()">🛡️ Interaktiven Sicherheits-Check starten</button>
-                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED jetzt kostenlos testen</button>
-                </div>
-            `);
-        }, 600);
-    }
-
-    function startSicherheitsCheck1() {
-        leadData.typ = "Sicherheits-Check";
-        addMessage("Interaktiven Sicherheits-Check starten", 'user');
-        setTimeout(() => {
-            addMessage(`<b>Sicherheits-Check (Frage 1 von 3):</b><br><br>Wie ist Ihr Objekt hauptsächlich beschaffen?`, 'bot');
-            updateDynamicInput(`
-                <div class="button-group">
-                    <button class="bot-btn" onclick="saveCheck1('Freistehendes Haus / Erdgeschoss')">🏡 Haus / Erdgeschoss (Höheres Risiko)</button>
-                    <button class="bot-btn" onclick="saveCheck1('Etagenwohnung / Gewerbeeinheit')">🏢 Etagenwohnung / Büro</button>
-                </div>
-            `);
-        }, 500);
-    }
-
-    function saveCheck1(antwort) {
-        leadData.gebaeudeTyp = antwort;
-        addMessage(antwort, 'user');
-        setTimeout(() => {
-            addMessage(`<b>Sicherheits-Check (Frage 2 von 3):</b><br><br>Wie bewerten Sie Ihren aktuellen Einbruchschutz?`, 'bot');
-            updateDynamicInput(`
-                <div class="button-group">
-                    <button class="bot-btn" onclick="saveCheck2('Kein bzw. veralteter Schutz')">⚠️ Kaum Schutz / Veraltet</button>
-                    <button class="bot-btn" onclick="saveCheck2('Mechanische Sicherungen vorhanden')">🔒 Mechanisch gesichert (ohne Alarm)</button>
-                </div>
-            `);
-        }, 500);
-    }
-
-    function saveCheck2(antwort) {
-        leadData.schutzStatus = antwort;
-        addMessage(antwort, 'user');
-        setTimeout(() => {
-            addMessage(`<b>Sicherheits-Check (Frage 3 von 3):</b><br><br>Wie viele gefährdete Außentüren und ebenerdige Fenster hat Ihr Objekt ca.?`, 'bot');
-            updateDynamicInput(`
-                <div class="input-row"><input type="number" id="elementeInput" value="6" min="1" max="50" style="text-align: center; font-weight: bold; font-size: 1.1rem;"></div>
-                <button class="send-btn" onclick="saveElemente()" style="margin-top: 5px; padding: 10px;">Auswertung & Angebot anzeigen</button>
-            `);
-        }, 500);
-    }
-
-    function saveElemente() {
-        const val = parseInt(document.getElementById('elementeInput').value);
-        if(!val || val < 1) { alert('Bitte geben Sie eine gültige Stückzahl ein.'); return; }
-        leadData.elementeCount = val;
-        addMessage(`${val} Elemente / Fenster & Türen`, 'user');
-        setTimeout(() => {
-            addMessage(`Vielen Dank! Basierend auf Ihrer Analyse für <b>${val} überwachte Elemente</b> ist FR.ED ideal geeignet.<br><br>Um Ihnen das Angebot zu sichern, tragen Sie bitte kurz Ihre Anschrift ein:`, 'bot');
-            updateDynamicInput(`
-                <div class="input-row"><input type="text" id="userName" placeholder="Vor- und Nachname / Firma"></div>
-                <div class="input-row" style="margin-top: 5px;"><input type="text" id="userAddress" placeholder="Straße, Hausnummer, PLZ Ort"></div>
-                <button class="send-btn" onclick="saveAddress()" style="margin-top: 5px; padding: 10px;">Daten absenden & Angebot sichern</button>
-            `);
-        }, 500);
-    }
-
-    function addGünstigeTestAnfrageMaske() {
-        leadData.typ = "Kostenloser Test";
-        addMessage(`Sichern Sie sich Ihren Termin zum kostenlosen Test von FR.ED direkt vor Ort durch <b>${partnerData.name}</b>.<br><br>Bitte tragen Sie Ihre Kontaktdaten ein:`, 'bot');
-        updateDynamicInput(`
-            <div class="input-row"><input type="text" id="userName" placeholder="Vor- und Nachname / Firma"></div>
-            <div class="input-row" style="margin-top: 5px;"><input type="text" id="userAddress" placeholder="Straße, Hausnummer, PLZ Ort"></div>
-            <button class="send-btn" onclick="saveTestLead()" style="margin-top: 5px; padding: 10px;">Kostenlosen Test anfragen</button>
-        `);
-    }
-
-    function saveTestLead() {
-        const nameVal = document.getElementById('userName').value;
-        const addrVal = document.getElementById('userAddress').value;
-        if(!nameVal || !addrVal) { alert('Bitte füllen Sie beide Felder aus.'); return; }
-        leadData.name = nameVal;
-        leadData.adresse = addrVal;
-        addMessage(`${nameVal}, ${addrVal}`, 'user');
-        sendDataToSheet();
-        setTimeout(() => {
-            addMessage(`Vielen Dank, ${nameVal}! Ihre Anfrage wurde an <b>${partnerData.name}</b> übermittelt. Wir melden uns umgehend!`, 'bot');
-            showFinalSummary();
-        }, 600);
-    }
-
-    function saveAddress() {
-        const nameVal = document.getElementById('userName').value;
-        const addrVal = document.getElementById('userAddress').value;
-        if(!nameVal || !addrVal) { alert('Bitte füllen Sie beide Felder aus.'); return; }
-        leadData.name = nameVal;
-        leadData.adresse = addrVal;
-        addMessage(`${nameVal}, ${addrVal}`, 'user');
-        sendDataToSheet();
-        setTimeout(() => {
-            addMessage(`Vielen Dank, ${nameVal}! Ihre Daten und die Analyse wurden an <b>${partnerData.name}</b> übermittelt.`, 'bot');
-            showFinalSummary();
-        }, 600);
-    }
-
-    function showFinalSummary() {
-        setTimeout(() => {
-            addMessage(`<b>NÄCHSTE SCHRITTE:</b><br><br>Tippen Sie auf einen Button, um uns direkt zu erreichen:`, 'bot');
-            updateDynamicInput(`
-                <div class="button-group">
-                    <div class="button-row">
-                        <button class="bot-btn" onclick="window.location.href='tel:${partnerData.telefon}'">📞 Anrufen</button>
-                        <button class="bot-btn" onclick="window.location.href='https://wa.me/49${partnerData.telefon.replace(/[^0-9]/g, '').substring(1)}'">💬 WhatsApp</button>
-                    </div>
-                    <button class="bot-btn" onclick="window.location.href='mailto:${partnerData.email}'">✉️ E-Mail schreiben</button>
-                </div>
-            `);
-        }, 600);
-    }
-
-    function updateDynamicInput(htmlContent) {
-        const dynamicArea = document.getElementById('dynamicInputContent');
-        if(dynamicArea) dynamicArea.innerHTML = htmlContent;
-    }
-
-    window.onload = function startBot() {
-        try {
-            addMessage(`<img src="IMG-20260725-WA0000.jpg" alt="Suritec FR.ED" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px;"><br><b>ÜBERBLICK: SURITEC FR.ED</b><br><br>Das intelligente Einbruch-Frühwarnsystem für Ihr Zuhause & Gewerberäume in ${partnerData.ort}.<br><br>⚠️ <i>August-Aktion:</i> Kostenloses HUB-Modul gesichert!<br><br>Wählen Sie Ihr Anliegen:`, 'bot');
-            updateDynamicInput(`
-                <div class="button-group">
-                    <div class="button-row">
-                        <button class="bot-btn" onclick="setZielgruppe('Privatkunde')">🏠 Privatkunde</button>
-                        <button class="bot-btn" onclick="setZielgruppe('Gewerbekunde')">🏢 Gewerbe</button>
-                    </div>
-                    <button class="bot-btn highlight" onclick="startTestAnfrage()">🚀 FR.ED kostenlos testen</button>
-                    <button class="bot-btn tank" onclick="startTankgutscheinAktion()">⛽ Tankgutschein-Aktion (Empfehlen)</button>
-                    <button class="bot-btn partner" onclick="startPartnerLogin()">🤝 Partner werden (Geschützt)</button>
-                    <button class="bot-btn music" id="musicBtn" onclick="toggleMusic()">🎵 Hintergrundmusik ein / aus</button>
-                </div>
-            `);
-        } catch (err) {
-            addMessage("Fehler beim Start: " + err.message, 'bot');
         }
-    };
-</script>
-
+    </script>
 </body>
 </html>
